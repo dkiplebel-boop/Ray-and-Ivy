@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Ray & Ivy - Wedding Invitation</title>
     <!-- Google Fonts: Elegant Serif and Clean Sans -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,300;0,400;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@200;300;400;600&family=Playfair+Display:ital,wght@0,300;0,400;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- AOS Library for Scroll Transitions -->
@@ -15,30 +15,31 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <style>
         :root {
-            --cream: #FAF9F6;
-            --soft-cream: #F3F1EA;
-            --forest-green: #2D3A31;
-            --gold: #C5A059;
+            --midnight: #0a0c0a;
+            --onyx: #121412;
+            --gold: #D4AF37;
+            --champagne: #F7E7CE;
+            --soft-white: rgba(255, 255, 255, 0.85);
         }
 
-        /* Prevent unwanted horizontal scrolling and bounce effects */
         html, body {
-            background-color: var(--cream);
-            color: var(--forest-green);
+            background-color: var(--midnight);
+            color: var(--soft-white);
             font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 0;
             width: 100%;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            text-align: center; /* Set global text alignment to center */
+            text-align: center;
+            scroll-behavior: smooth;
         }
 
-        /* Sophisticated Title Font */
         .elegant-title { 
             font-family: 'Cormorant Garamond', serif; 
             font-weight: 300;
             letter-spacing: 0.05em;
+            color: var(--champagne);
         }
         
         .serif { font-family: 'Playfair Display', serif; }
@@ -47,7 +48,7 @@
         .hero-section {
             height: 100vh;
             height: 100dvh;
-            background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), 
+            background: linear-gradient(rgba(10, 12, 10, 0.7), rgba(10, 12, 10, 0.4)), 
                         url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=2070') no-repeat center center;
             background-size: cover;
             display: flex;
@@ -61,87 +62,129 @@
             width: 100%;
         }
 
+        /* Navigation with Hide/Show logic */
         nav {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            padding: env(safe-area-inset-top, 1.5rem) 1.5rem 1.5rem;
+            padding: env(safe-area-inset-top, 2.5rem) 2rem 1.5rem;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 10;
+            z-index: 100;
+            background: transparent;
+            border-bottom: 1px solid transparent;
+            transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                        background 0.5s ease, 
+                        padding 0.5s ease;
         }
 
-        @media (min-width: 1024px) {
-            nav { justify-content: center; padding: 2rem; }
+        /* State for when user scrolls down */
+        nav.nav-hidden {
+            transform: translateY(-100%);
+        }
+
+        /* State for when user scrolls up */
+        nav.scrolled {
+            padding: 1.25rem 2rem;
+            background: rgba(10, 12, 10, 0.9);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
         }
 
         .nav-links a {
             margin: 0 0.75rem;
             text-transform: uppercase;
             font-size: 0.6rem;
-            letter-spacing: 0.15rem;
-            transition: color 0.3s;
-            color: white;
+            letter-spacing: 0.2rem;
+            transition: all 0.3s;
+            color: var(--soft-white);
+            position: relative;
+            font-weight: 300;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-links a:hover::after {
+            width: 80%;
         }
 
         @media (min-width: 1024px) {
-            .nav-links a { margin: 0 1.5rem; font-size: 0.7rem; letter-spacing: 0.25rem; }
+            .nav-links a { margin: 0 1.5rem; font-size: 0.7rem; letter-spacing: 0.3rem; }
         }
 
         .divider {
-            width: 80px;
+            width: 100px;
             height: 1px;
-            background-color: rgba(255, 255, 255, 0.6);
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
             margin: 1.5rem auto;
         }
 
         @media (min-width: 1024px) {
-            .divider { width: 120px; margin: 2rem auto; }
+            .divider { width: 200px; margin: 3rem auto; }
         }
 
         .section-padding {
-            padding: 60px 5%;
+            padding: 100px 5%;
         }
 
         @media (min-width: 1024px) {
-            .section-padding { padding: 120px 8%; }
+            .section-padding { padding: 160px 8%; }
         }
 
         .btn-elegant {
-            border: 1px solid var(--forest-green);
-            padding: 0.7rem 2rem;
+            border: 1px solid var(--gold);
+            padding: 1rem 3rem;
             text-transform: uppercase;
-            letter-spacing: 0.2rem;
-            font-size: 0.7rem;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.3rem;
+            font-size: 0.65rem;
+            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
             cursor: pointer;
             background: transparent;
             display: inline-block;
             margin: 0 auto;
+            color: var(--gold);
+            font-weight: 400;
         }
 
         .btn-elegant:hover {
-            background-color: var(--forest-green);
-            color: var(--cream);
-            transform: translateY(-2px);
+            background-color: var(--gold);
+            color: var(--midnight);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
 
         .map-container {
             width: 100%;
-            height: 350px;
-            filter: grayscale(1) sepia(0.2) contrast(1.1);
-            transition: filter 0.6s ease;
+            height: 400px;
+            filter: invert(90%) hue-rotate(180deg) brightness(0.7) contrast(1.2);
+            transition: all 0.8s ease;
+            border: 1px solid rgba(212, 175, 55, 0.1);
         }
         
         @media (min-width: 1024px) {
-            .map-container { height: 500px; }
+            .map-container { height: 600px; }
         }
 
         .image-frame {
             position: relative;
-            padding: 15px;
+            padding: 30px;
             display: flex;
             justify-content: center;
         }
@@ -152,77 +195,89 @@
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 70%;
-            height: 70%;
+            width: 85%;
+            height: 85%;
             border: 1px solid var(--gold);
+            opacity: 0.2;
             z-index: -1;
         }
 
-        /* Scroll Arrow Animation - Fixed centering */
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% {transform: translate(-50%, 0);}
-            40% {transform: translate(-50%, -5px);}
-            60% {transform: translate(-50%, -3px);}
+            40% {transform: translate(-50%, -10px);}
+            60% {transform: translate(-50%, -5px);}
         }
 
         .scroll-indicator {
             position: absolute;
-            bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+            bottom: calc(40px + env(safe-area-inset-bottom, 0px));
             left: 50%;
             transform: translateX(-50%);
-            animation: bounce 2s infinite;
-            opacity: 0.7;
+            animation: bounce 2.5s infinite;
+            opacity: 0.6;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: white;
+            color: var(--champagne);
             text-decoration: none;
-            width: 100px;
         }
 
         .scroll-indicator span {
-            font-size: 8px;
-            letter-spacing: 3px;
+            font-size: 7px;
+            letter-spacing: 5px;
             text-transform: uppercase;
-            margin-bottom: 8px;
-            display: block;
-            width: 100%;
-            text-align: center;
+            margin-bottom: 12px;
+            font-weight: 200;
         }
 
-        /* Center content blocks */
-        .container-fixed {
-            max-width: 1440px;
-            margin: 0 auto;
-            position: relative;
-            width: 100%;
-        }
-
-        /* Specific Left Align Override for Location Info */
         .location-info-block {
             text-align: left;
             display: inline-block;
+        }
+
+        input, select {
+            color: var(--champagne) !important;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2) !important;
+        }
+        
+        .overlay-card {
+            background: rgba(18, 20, 18, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .heart-svg {
+            fill: var(--gold);
+            width: 24px;
+            height: 24px;
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
         }
     </style>
 </head>
 <body>
 
-    <!-- Navigation -->
-    <nav>
+    <!-- Scroll-Responsive Navigation -->
+    <nav id="navbar">
         <div class="nav-links hidden lg:flex items-center">
-            <a href="#home">Home</a>
-            <a href="#journey">Journey</a>
-            <div class="cinzel text-xl lg:text-2xl font-bold tracking-[0.3em] text-white mx-8">R & I</div>
-            <a href="#location">Location</a>
+            <a href="#home">Intro</a>
+            <a href="#journey">Story</a>
+            <div class="cinzel text-xl lg:text-3xl font-bold tracking-[0.5em] text-[#D4AF37] mx-12">R & I</div>
+            <a href="#location">Event</a>
             <a href="#rsvp">RSVP</a>
         </div>
-        <!-- Simple Mobile Nav Links -->
+        <!-- Mobile Nav -->
         <div class="nav-links lg:hidden flex flex-col items-center">
-            <div class="cinzel text-xl font-bold tracking-[0.3em] text-white mb-2">R & I</div>
-            <div class="flex">
-                <a href="#journey">Journey</a>
-                <a href="#location">Map</a>
+            <div class="cinzel text-xl font-bold tracking-[0.4em] text-[#D4AF37] mb-3">R & I</div>
+            <div class="flex space-x-4">
+                <a href="#journey">Story</a>
+                <a href="#location">Event</a>
                 <a href="#rsvp">RSVP</a>
             </div>
         </div>
@@ -230,85 +285,91 @@
 
     <!-- Hero Section -->
     <header id="home" class="hero-section">
-        <div data-aos="fade-down">
-            <p class="uppercase tracking-[0.3em] lg:tracking-[0.5em] mb-4 lg:mb-6 text-[10px] lg:text-xs font-light">Join us for the wedding of</p>
+        <div data-aos="fade-down" data-aos-duration="2000">
+            <p class="uppercase tracking-[0.6em] mb-6 text-[9px] lg:text-xs font-extralight text-white/70">Celebrate Our Union</p>
         </div>
-        <h1 class="elegant-title text-5xl md:text-7xl lg:text-[10rem] mb-4 lg:mb-6" data-aos="zoom-in" data-aos-duration="1800">Ray & Ivy</h1>
+        <!-- Reduced text sizes for a tighter look -->
+        <h1 class="elegant-title text-6xl md:text-8xl lg:text-[10rem] mb-6 glow-text" data-aos="zoom-in" data-aos-duration="2500">Ray & Ivy</h1>
         <div class="divider" data-aos="width-expand"></div>
-        <div data-aos="fade-up" data-aos-delay="400">
-            <p class="serif italic text-lg lg:text-2xl font-light tracking-widest">June 27, 2026</p>
+        <div data-aos="fade-up" data-aos-delay="800">
+            <p class="serif italic text-xl lg:text-4xl font-light tracking-[0.4em] text-[#F7E7CE]">JUNE 27, 2026</p>
         </div>
         
-        <!-- Scroll Arrow -->
         <a href="#journey" class="scroll-indicator">
-            <span class="font-light">Scroll</span>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <span>Discover</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
             </svg>
         </a>
     </header>
 
     <div class="container-fixed">
-        <!-- The Date Section -->
-        <section class="section-padding text-center bg-white flex flex-col items-center">
-            <div class="max-w-4xl mx-auto" data-aos="fade-up">
-                <h2 class="elegant-title text-4xl md:text-6xl lg:text-8xl mb-4 lg:mb-6 text-[#2D3A31]">06 . 27 . 26</h2>
-                <p class="uppercase tracking-[0.3em] lg:tracking-[0.4em] text-[10px] lg:text-xs mb-8 lg:mb-12 text-[#C5A059]">Koisamo, Soin Ward</p>
-                <p class="max-w-xl mx-auto text-gray-500 leading-relaxed font-light text-xs lg:text-sm tracking-wide px-4">
-                    WE INVITE YOU TO CELEBRATE THE UNION OF TWO HEARTS. A DAY OF LOVE, LAUGHTER, AND THE START OF A NEW CHAPTER TOGETHER.
+        <!-- Date / Intro -->
+        <section class="section-padding text-center bg-[var(--midnight)] flex flex-col items-center relative">
+             <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-32 bg-gradient-to-b from-gold/40 to-transparent"></div>
+            <div class="max-w-4xl mx-auto pt-10" data-aos="fade-up">
+                <h2 class="elegant-title text-6xl md:text-8xl lg:text-[10rem] mb-6 text-[#D4AF37]">06 . 27 . 26</h2>
+                <p class="uppercase tracking-[0.6em] text-[9px] lg:text-xs mb-10 lg:mb-16 text-white/40">Koisamo, Soin Ward, Kenya</p>
+                <p class="max-w-2xl mx-auto text-white/60 leading-[2.2] font-extralight text-xs lg:text-sm tracking-[0.2em] px-6">
+                    A SYMPHONY OF TWO SOULS, FINDING HARMONY IN THE WHISPER OF THE WIND AND THE WARMTH OF THE SUN. WE INVITE YOU TO WITNESS THE BEGINNING OF OUR FOREVER.
                 </p>
             </div>
         </section>
 
-        <!-- The Journey -->
-        <section id="journey" class="section-padding flex flex-col md:grid md:grid-cols-2 gap-10 lg:gap-20 items-center bg-[var(--soft-cream)] overflow-hidden">
-            <div class="image-frame w-full" data-aos="fade-up">
-                <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&q=80&w=1000" alt="Ray and Ivy" class="w-full max-w-md md:max-w-full h-[400px] lg:h-[650px] object-cover grayscale-[30%] shadow-xl">
+        <!-- Journey Section -->
+        <section id="journey" class="section-padding flex flex-col md:grid md:grid-cols-2 gap-16 lg:gap-32 items-center bg-[var(--onyx)]">
+            <div class="image-frame w-full" data-aos="fade-right">
+                <div class="relative w-full group">
+                   <div class="absolute -inset-6 border border-[#D4AF37]/10 z-0 transition-all duration-700 group-hover:inset-0"></div>
+                   <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&q=80&w=1000" alt="Ray and Ivy" class="relative z-10 w-full h-[500px] lg:h-[800px] object-cover grayscale-[60%] hover:grayscale-0 transition-all duration-1000 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.8)]">
+                </div>
             </div>
-            <div class="space-y-6 lg:space-y-10 text-center md:text-center flex flex-col items-center" data-aos="fade-up">
-                <h3 class="cinzel text-base lg:text-xl tracking-[0.3em] uppercase opacity-60">Ray & Ivy:</h3>
-                <h4 class="elegant-title text-4xl lg:text-6xl text-[#2D3A31]">The Journey</h4>
-                <div class="space-y-4 lg:space-y-6 text-gray-600 leading-loose font-light text-xs lg:text-sm tracking-wide max-w-md">
+            <div class="space-y-8 lg:space-y-16 text-center md:text-center flex flex-col items-center" data-aos="fade-left">
+                <div class="flex flex-col items-center">
+                    <h3 class="cinzel text-xs tracking-[0.6em] uppercase text-[#D4AF37] mb-6">The Chronicle:</h3>
+                    <h4 class="elegant-title text-5xl lg:text-8xl leading-tight">Our Love Story</h4>
+                </div>
+                <div class="space-y-8 text-white/50 leading-loose font-extralight text-xs lg:text-sm tracking-[0.15em] max-w-lg">
                     <p>
-                        From our first quiet conversation to the grand moments that defined us, our journey has been one of discovery and shared dreams. We found in each other a home, a sanctuary, and a best friend.
+                        It began as a quiet resonance, a shared understanding that needed no words. Over the seasons, that resonance grew into a melody—a life lived in tandem, where every joy is doubled and every burden halved.
                     </p>
                     <p>
-                        Today, we stand ready to promise our tomorrows. We are so honored to have you by our side as we step into this beautiful future, bound by love and mutual respect.
+                        We have traveled paths both smooth and rugged, only to realize that the destination was never a place, but the person walking beside us.
                     </p>
                 </div>
-                <div class="pt-2 lg:pt-4">
-                    <button class="btn-elegant">Our Full Story</button>
+                <div class="pt-6">
+                    <button class="btn-elegant">Read The Memoir</button>
                 </div>
             </div>
         </section>
 
-        <!-- Location / Map -->
-        <section id="location" class="section-padding bg-white flex flex-col items-center">
-            <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center w-full">
+        <!-- Event Details -->
+        <section id="location" class="section-padding bg-[var(--midnight)] flex flex-col items-center">
+            <div class="grid lg:grid-cols-12 gap-16 lg:gap-24 items-center w-full">
                 <div class="lg:col-span-5 flex flex-col items-center lg:items-start" data-aos="fade-up">
-                    <h3 class="cinzel text-[10px] lg:text-sm tracking-[0.4em] uppercase mb-4 lg:mb-6 opacity-60">The Setting:</h3>
-                    <h4 class="elegant-title text-4xl lg:text-5xl mb-6 lg:mb-8">At Their Home</h4>
+                    <h3 class="cinzel text-[10px] lg:text-xs tracking-[0.7em] uppercase mb-10 text-[#D4AF37]">The Grand Occasion:</h3>
+                    <h4 class="elegant-title text-5xl lg:text-7xl mb-12 lg:mb-16">The Homestead</h4>
                     
-                    <!-- Restore Left Alignment for Info Block -->
-                    <div class="location-info-block space-y-6 lg:space-y-8 text-gray-600 font-light">
-                        <div class="group">
-                            <p class="uppercase tracking-widest text-[9px] lg:text-[10px] text-gold mb-1 lg:mb-2 font-semibold">Location</p>
-                            <p class="text-xs lg:text-sm">Koisamo, Soin Ward | 10:00 AM</p>
+                    <div class="location-info-block space-y-10 lg:space-y-16 text-white/60">
+                        <div class="border-l border-[#D4AF37]/30 pl-8">
+                            <p class="uppercase tracking-[0.4em] text-[9px] text-[#D4AF37] mb-3 font-semibold">Venue</p>
+                            <p class="text-sm lg:text-lg tracking-[0.25em] text-[#F7E7CE]">Koisamo, Soin Ward</p>
+                            <p class="text-[10px] mt-2 opacity-50 tracking-[0.1em]">KERICHO COUNTY, KENYA</p>
                         </div>
-                        <div class="w-10 h-[1px] bg-gold opacity-30"></div>
-                        <div class="group">
-                            <p class="uppercase tracking-widest text-[9px] lg:text-[10px] text-gold mb-1 lg:mb-2 font-semibold">The Celebration</p>
-                            <p class="text-xs lg:text-sm">Ceremony and Reception to follow</p>
+                        <div class="border-l border-[#D4AF37]/30 pl-8">
+                            <p class="uppercase tracking-[0.4em] text-[9px] text-[#D4AF37] mb-3 font-semibold">Itinerary</p>
+                            <p class="text-sm lg:text-lg tracking-[0.25em] text-[#F7E7CE]">Traditional Union: 10:00 AM</p>
+                            <p class="text-[10px] mt-2 opacity-50 tracking-[0.1em]">FEAST & DANCE TO FOLLOW</p>
                         </div>
                     </div>
 
-                    <div class="mt-8 lg:mt-12 mb-10 lg:mb-0 w-full text-center lg:text-left">
-                        <a href="https://www.google.com/maps/search/Koisamo+Soin+Ward" target="_blank" class="btn-elegant inline-block">Get Directions</a>
+                    <div class="mt-16 lg:mt-24 w-full text-center lg:text-left">
+                        <a href="https://www.google.com/maps/search/Koisamo+Soin+Ward" target="_blank" class="btn-elegant inline-block">Navigator</a>
                     </div>
                 </div>
                 
-                <div class="lg:col-span-7" data-aos="fade-up">
-                    <div class="map-container rounded-sm shadow-2xl overflow-hidden border border-[#EAE7DC]">
+                <div class="lg:col-span-7" data-aos="zoom-in">
+                    <div class="map-container shadow-[0_40px_80px_-20px_rgba(0,0,0,0.9)] overflow-hidden">
                         <iframe 
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31911.36531368146!2d35.1500!3d-0.1500!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182a567c8b8b8b8b%3A0x0!2sKoisamo%2C+Soin+Ward!5e0!3m2!1sen!2ske!4v1625000000000!5m2!1sen!2ske" 
                             width="100%" 
@@ -322,73 +383,98 @@
             </div>
         </section>
 
-        <!-- Message of Invitation -->
-        <section class="py-12 lg:py-20 text-center bg-white" data-aos="fade-up">
-            <div class="max-w-2xl mx-auto px-6 flex flex-col items-center">
-                <h3 class="elegant-title text-3xl lg:text-5xl text-[#2D3A31] mb-4">We would be honored to have you join us</h3>
-                <p class="serif italic text-gray-500 text-base lg:text-lg">Your presence is the greatest gift of all.</p>
-            </div>
-        </section>
-
-        <!-- RSVP Section -->
-        <section id="rsvp" class="section-padding bg-[var(--soft-cream)] text-center flex flex-col items-center">
-            <div class="max-w-2xl mx-auto w-full" data-aos="fade-up">
-                <h2 class="elegant-title text-5xl lg:text-7xl mb-4 lg:mb-6">RSVP</h2>
-                <p class="uppercase tracking-[0.2em] lg:tracking-[0.3em] text-[9px] lg:text-[10px] mb-10 lg:mb-16 opacity-60">Kindly respond by June 1, 2026</p>
+        <!-- RSVP -->
+        <section id="rsvp" class="section-padding bg-[var(--onyx)] text-center flex flex-col items-center relative overflow-hidden">
+            <div class="max-w-3xl mx-auto w-full relative z-10 overlay-card py-20 px-10 lg:px-24 rounded-sm" data-aos="fade-up">
                 
-                <form class="space-y-8 lg:space-y-12 max-w-lg mx-auto">
-                    <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
-                        <input type="text" placeholder="GUEST NAME" class="w-full bg-transparent border-b border-gray-300 py-2 lg:py-3 outline-none focus:border-gold transition-colors font-light tracking-widest text-[10px] lg:text-[11px] text-center">
-                        <input type="email" placeholder="EMAIL ADDRESS" class="w-full bg-transparent border-b border-gray-300 py-2 lg:py-3 outline-none focus:border-gold transition-colors font-light tracking-widest text-[10px] lg:text-[11px] text-center">
+                <!-- Welcome/Join Message with Heart -->
+                <div class="flex flex-col items-center mb-12">
+                    <svg class="heart-svg" viewBox="0 0 24 24">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                    <p class="cinzel text-[10px] lg:text-xs tracking-[0.8em] text-[#F7E7CE] uppercase mb-4">We would like you to join us</p>
+                    <div class="w-12 h-[1px] bg-gold/30"></div>
+                </div>
+
+                <h2 class="elegant-title text-6xl lg:text-9xl mb-6 text-[#D4AF37]">RSVP</h2>
+                <p class="uppercase tracking-[0.5em] text-[9px] mb-16 lg:mb-24 text-white/30">Confirmation requested by June 1, 2026</p>
+                
+                <form class="space-y-12 lg:space-y-20 max-w-xl mx-auto">
+                    <div class="grid md:grid-cols-2 gap-10 lg:gap-16">
+                        <input type="text" placeholder="GUEST NAME" class="w-full bg-transparent border-b border-white/10 py-4 outline-none focus:border-gold transition-all font-light tracking-[0.3em] text-[10px] text-center uppercase">
+                        <input type="email" placeholder="EMAIL ADDRESS" class="w-full bg-transparent border-b border-white/10 py-4 outline-none focus:border-gold transition-all font-light tracking-[0.3em] text-[10px] text-center uppercase">
                     </div>
-                    <select class="w-full bg-transparent border-b border-gray-300 py-2 lg:py-3 outline-none focus:border-gold transition-colors font-light tracking-widest text-[10px] lg:text-[11px] appearance-none cursor-pointer text-center">
-                        <option value="" disabled selected>WILL YOU ATTEND?</option>
-                        <option>Joyfully Accept</option>
-                        <option>Regretfully Decline</option>
+                    <select class="w-full bg-transparent border-b border-white/10 py-4 outline-none focus:border-gold transition-all font-light tracking-[0.3em] text-[10px] appearance-none cursor-pointer text-center text-white/50">
+                        <option value="" disabled selected class="bg-[#121412]">WILL YOU ATTEND?</option>
+                        <option class="bg-[#121412]">With Pleasure</option>
+                        <option class="bg-[#121412]">From Afar</option>
                     </select>
-                    <button type="button" class="btn-elegant w-full md:w-auto">Confirm Attendance</button>
+                    <button type="button" class="btn-elegant w-full">Finalize Response</button>
                 </form>
             </div>
         </section>
 
         <!-- Footer -->
-        <footer class="py-12 lg:py-16 bg-[#2D3A31] text-white text-center">
-            <div class="cinzel text-2xl lg:text-3xl mb-4 tracking-[0.4em]">R & I</div>
-            <p class="text-[9px] lg:text-[10px] tracking-[0.4em] lg:tracking-[0.5em] uppercase opacity-40">Forever & Always | 2026</p>
+        <footer class="py-24 bg-[var(--midnight)] text-white text-center border-t border-white/5">
+            <div class="cinzel text-3xl lg:text-5xl mb-8 tracking-[0.6em] text-[#D4AF37] opacity-80">R & I</div>
+            <p class="text-[9px] tracking-[0.7em] uppercase text-white/20 mb-12">EST. 2026 | THE BEGINNING</p>
+            <div class="w-16 h-[1px] bg-gold/30 mx-auto"></div>
         </footer>
     </div>
 
     <script>
-        // Initialize AOS with premium easing
         AOS.init({
-            duration: 1200,
+            duration: 1800,
             once: false,
             mirror: true,
-            easing: 'ease-in-out-sine'
+            easing: 'ease-out-expo'
         });
 
-        // Immersive/Fullscreen handling: try to hide URL bars on load
-        window.addEventListener("load", function() {
-            setTimeout(function() {
-                window.scrollTo(0, 1);
-            }, 0);
-        });
+        // Smart Nav: Disappear on scroll down, Reappear on scroll up
+        let lastScrollTop = 0;
+        const navbar = document.getElementById('navbar');
+        const scrollThreshold = 100;
 
-        // Smooth scroll
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Background & Padding logic
+            if (scrollTop > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+
+            // Disappear/Appear logic
+            if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
+                // Scrolling down - hide
+                navbar.classList.add('nav-hidden');
+            } else {
+                // Scrolling up or at top - show
+                navbar.classList.remove('nav-hidden');
+            }
+            
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For mobile or negative scrolling
+        }, { passive: true });
+
+        // Smooth scroll with offset for nav
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
-                    targetElement.scrollIntoView({
+                    const navHeight = 80;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
                         behavior: 'smooth'
                     });
                 }
             });
         });
 
-        // Handle viewport height adjustments on resize (for mobile browsers)
         const setVh = () => {
             let vh = window.innerHeight * 0.01;
             document.documentElement.style.setProperty('--vh', `${vh}px`);
