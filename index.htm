@@ -399,18 +399,34 @@
                 <h2 class="elegant-title text-6xl lg:text-9xl mb-6 text-[#D4AF37]">RSVP</h2>
                 <p class="uppercase tracking-[0.5em] text-[9px] mb-16 lg:mb-24 text-white/30">Confirmation requested by June 1, 2026</p>
                 
-                <form class="space-y-12 lg:space-y-20 max-w-xl mx-auto">
-                    <div class="grid md:grid-cols-2 gap-10 lg:gap-16">
-                        <input type="text" placeholder="GUEST NAME" class="w-full bg-transparent border-b border-white/10 py-4 outline-none focus:border-gold transition-all font-light tracking-[0.3em] text-[10px] text-center uppercase">
-                        <input type="email" placeholder="EMAIL ADDRESS" class="w-full bg-transparent border-b border-white/10 py-4 outline-none focus:border-gold transition-all font-light tracking-[0.3em] text-[10px] text-center uppercase">
-                    </div>
-                    <select class="w-full bg-transparent border-b border-white/10 py-4 outline-none focus:border-gold transition-all font-light tracking-[0.3em] text-[10px] appearance-none cursor-pointer text-center text-white/50">
-                        <option value="" disabled selected class="bg-[#121412]">WILL YOU ATTEND?</option>
-                        <option class="bg-[#121412]">With Pleasure</option>
-                        <option class="bg-[#121412]">From Afar</option>
-                    </select>
-                    <button type="button" class="btn-elegant w-full">Finalize Response</button>
-                </form>
+              <form id="rsvpForm" class="space-y-12 lg:space-y-20 max-w-xl mx-auto">
+    <div class="w-full">
+        <input type="text" name="guest_name" id="guest_name" required placeholder="FULL NAME" 
+               class="w-full bg-transparent border-b border-white/10 py-4 outline-none focus:border-gold transition-all font-light tracking-[0.3em] text-[10px] text-center uppercase">
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-10 lg:gap-16">
+        <select name="attendance_status" id="attendance_status" required 
+                class="w-full bg-transparent border-b border-white/10 py-4 outline-none focus:border-gold transition-all font-light tracking-[0.3em] text-[10px] appearance-none cursor-pointer text-center text-white/50">
+            <option value="" disabled selected class="bg-[#121412]">WILL YOU ATTEND?</option>
+            <option value="Accepted" class="bg-[#121412]">Joyfully Accept</option>
+            <option value="Declined" class="bg-[#121412]">Regretfully Decline</option>
+        </select>
+
+        <select name="guest_count" id="guest_count" required 
+                class="w-full bg-transparent border-b border-white/10 py-4 outline-none focus:border-gold transition-all font-light tracking-[0.3em] text-[10px] appearance-none cursor-pointer text-center text-white/50">
+            <option value="" disabled selected class="bg-[#121412]">HOW MANY PEOPLE?</option>
+            <option value="1" class="bg-[#121412]">Just Me (1)</option>
+            <option value="2" class="bg-[#121412]">Plus One (2)</option>
+            <option value="3" class="bg-[#121412]">Small Group (3)</option>
+            <option value="4+" class="bg-[#121412]">Family (4+)</option>
+            <option value="0" class="bg-[#121412]">None (Declining)</option>
+        </select>
+    </div>
+
+    <button type="submit" id="submitBtn" class="btn-elegant w-full">Finalize Response</button>
+    <p id="formStatus" class="text-[10px] tracking-[0.2em] mt-4 hidden uppercase"></p>
+</form>
             </div>
         </section>
 
@@ -481,6 +497,35 @@
         };
         window.addEventListener('resize', setVh);
         setVh();
+
+       const scriptURL = 'https://script.google.com/macros/s/AKfycbzR4eA3aY2Jy0BqnMZBtF9BIlp3jUwXKnKSisxNXuAYL9F-pURD0zCEy_i4V51cksIx/exec';
+const rsvpForm = document.getElementById('rsvpForm');
+const submitBtn = document.getElementById('submitBtn');
+const formStatus = document.getElementById('formStatus');
+
+rsvpForm.addEventListener('submit', e => {
+  e.preventDefault();
+  
+  // UI Feedback
+  submitBtn.disabled = true;
+  submitBtn.innerText = "SENDING...";
+  formStatus.classList.remove('hidden');
+  formStatus.innerText = "Processing your invitation...";
+
+  // Sending the data
+  fetch(scriptURL, { method: 'POST', body: new FormData(rsvpForm)})
+    .then(response => {
+        submitBtn.innerText = "THANK YOU";
+        formStatus.innerText = "Response received. See you at the homestead.";
+        rsvpForm.reset();
+    })
+    .catch(error => {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "TRY AGAIN";
+        formStatus.innerText = "Something went wrong. Please try again.";
+        console.error('Error!', error.message);
+    });
+});
     </script>
 </body>
 </html>
