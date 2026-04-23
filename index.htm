@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Ray & Ivy - Wedding Invitation</title>
     <!-- Google Fonts: Elegant Serif and Clean Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,300;0,400;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
@@ -19,11 +21,17 @@
             --gold: #C5A059;
         }
 
-        body {
+        /* Prevent unwanted horizontal scrolling and bounce effects */
+        html, body {
             background-color: var(--cream);
             color: var(--forest-green);
             font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            width: 100%;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            text-align: center; /* Set global text alignment to center */
         }
 
         /* Sophisticated Title Font */
@@ -38,6 +46,7 @@
 
         .hero-section {
             height: 100vh;
+            height: 100dvh;
             background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), 
                         url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=2070') no-repeat center center;
             background-size: cover;
@@ -49,21 +58,23 @@
             text-align: center;
             padding: 0 1rem;
             position: relative;
+            width: 100%;
         }
 
         nav {
             position: absolute;
             top: 0;
+            left: 0;
             width: 100%;
-            padding: 1.5rem;
+            padding: env(safe-area-inset-top, 1.5rem) 1.5rem 1.5rem;
             display: flex;
-            justify-content: center; /* Centered for mobile by default */
+            justify-content: center;
             align-items: center;
             z-index: 10;
         }
 
         @media (min-width: 1024px) {
-            nav { justify-content: space-between; padding: 2rem; }
+            nav { justify-content: center; padding: 2rem; }
         }
 
         .nav-links a {
@@ -107,10 +118,8 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             background: transparent;
-        }
-
-        @media (min-width: 1024px) {
-            .btn-elegant { padding: 0.8rem 3rem; letter-spacing: 0.3rem; font-size: 0.75rem; }
+            display: inline-block;
+            margin: 0 auto;
         }
 
         .btn-elegant:hover {
@@ -130,40 +139,35 @@
             .map-container { height: 500px; }
         }
 
-        .map-container:hover {
-            filter: grayscale(0);
-        }
-
         .image-frame {
             position: relative;
             padding: 15px;
-        }
-        
-        @media (min-width: 1024px) {
-            .image-frame { padding: 30px; }
+            display: flex;
+            justify-content: center;
         }
 
         .image-frame::after {
             content: "";
             position: absolute;
             top: 0;
-            right: 0;
+            left: 50%;
+            transform: translateX(-50%);
             width: 70%;
             height: 70%;
             border: 1px solid var(--gold);
             z-index: -1;
         }
 
-        /* Scroll Arrow Animation */
+        /* Scroll Arrow Animation - Fixed centering */
         @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-5px);}
-            60% {transform: translateY(-3px);}
+            0%, 20%, 50%, 80%, 100% {transform: translate(-50%, 0);}
+            40% {transform: translate(-50%, -5px);}
+            60% {transform: translate(-50%, -3px);}
         }
 
         .scroll-indicator {
             position: absolute;
-            bottom: 30px;
+            bottom: calc(20px + env(safe-area-inset-bottom, 0px));
             left: 50%;
             transform: translateX(-50%);
             animation: bounce 2s infinite;
@@ -174,6 +178,7 @@
             align-items: center;
             color: white;
             text-decoration: none;
+            width: 100px;
         }
 
         .scroll-indicator span {
@@ -181,6 +186,23 @@
             letter-spacing: 3px;
             text-transform: uppercase;
             margin-bottom: 8px;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Center content blocks */
+        .container-fixed {
+            max-width: 1440px;
+            margin: 0 auto;
+            position: relative;
+            width: 100%;
+        }
+
+        /* Specific Left Align Override for Location Info */
+        .location-info-block {
+            text-align: left;
+            display: inline-block;
         }
     </style>
 </head>
@@ -188,29 +210,34 @@
 
     <!-- Navigation -->
     <nav>
-        <div class="nav-links hidden lg:block">
+        <div class="nav-links hidden lg:flex items-center">
             <a href="#home">Home</a>
             <a href="#journey">Journey</a>
-        </div>
-        <div class="cinzel text-xl lg:text-2xl font-bold tracking-[0.3em] text-white mx-4">R & I</div>
-        <div class="nav-links hidden lg:block">
+            <div class="cinzel text-xl lg:text-2xl font-bold tracking-[0.3em] text-white mx-8">R & I</div>
             <a href="#location">Location</a>
             <a href="#rsvp">RSVP</a>
         </div>
         <!-- Simple Mobile Nav Links -->
-        <div class="nav-links lg:hidden flex">
-            <a href="#journey">Journey</a>
-            <a href="#location">Map</a>
-            <a href="#rsvp">RSVP</a>
+        <div class="nav-links lg:hidden flex flex-col items-center">
+            <div class="cinzel text-xl font-bold tracking-[0.3em] text-white mb-2">R & I</div>
+            <div class="flex">
+                <a href="#journey">Journey</a>
+                <a href="#location">Map</a>
+                <a href="#rsvp">RSVP</a>
+            </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <header id="home" class="hero-section">
-        <p class="uppercase tracking-[0.3em] lg:tracking-[0.5em] mb-4 lg:mb-6 text-[10px] lg:text-xs font-light" data-aos="fade-down">Join us for the wedding of</p>
+        <div data-aos="fade-down">
+            <p class="uppercase tracking-[0.3em] lg:tracking-[0.5em] mb-4 lg:mb-6 text-[10px] lg:text-xs font-light">Join us for the wedding of</p>
+        </div>
         <h1 class="elegant-title text-5xl md:text-7xl lg:text-[10rem] mb-4 lg:mb-6" data-aos="zoom-in" data-aos-duration="1800">Ray & Ivy</h1>
         <div class="divider" data-aos="width-expand"></div>
-        <p class="serif italic text-lg lg:text-2xl font-light tracking-widest" data-aos="fade-up" data-aos-delay="400">June 27, 2026</p>
+        <div data-aos="fade-up" data-aos-delay="400">
+            <p class="serif italic text-lg lg:text-2xl font-light tracking-widest">June 27, 2026</p>
+        </div>
         
         <!-- Scroll Arrow -->
         <a href="#journey" class="scroll-indicator">
@@ -221,112 +248,115 @@
         </a>
     </header>
 
-    <!-- The Date Section -->
-    <section class="section-padding text-center bg-white">
-        <div class="max-w-4xl mx-auto" data-aos="fade-up">
-            <h2 class="elegant-title text-4xl md:text-6xl lg:text-8xl mb-4 lg:mb-6 text-[#2D3A31]">06 . 27 . 26</h2>
-            <p class="uppercase tracking-[0.3em] lg:tracking-[0.4em] text-[10px] lg:text-xs mb-8 lg:mb-12 text-[#C5A059]">Koisamo, Soin Ward</p>
-            <p class="max-w-xl mx-auto text-gray-500 leading-relaxed font-light text-xs lg:text-sm tracking-wide px-4">
-                WE INVITE YOU TO CELEBRATE THE UNION OF TWO HEARTS. A DAY OF LOVE, LAUGHTER, AND THE START OF A NEW CHAPTER TOGETHER.
-            </p>
-        </div>
-    </section>
-
-    <!-- The Journey -->
-    <section id="journey" class="section-padding grid md:grid-cols-2 gap-10 lg:gap-20 items-center bg-[var(--soft-cream)] overflow-hidden">
-        <div class="image-frame" data-aos="fade-right">
-            <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&q=80&w=1000" alt="Ray and Ivy" class="w-full h-[400px] lg:h-[650px] object-cover grayscale-[30%] shadow-xl">
-        </div>
-        <div class="space-y-6 lg:space-y-10" data-aos="fade-left">
-            <h3 class="cinzel text-base lg:text-xl tracking-[0.3em] uppercase opacity-60">Ray & Ivy:</h3>
-            <h4 class="elegant-title text-4xl lg:text-6xl text-[#2D3A31]">The Journey</h4>
-            <div class="space-y-4 lg:space-y-6 text-gray-600 leading-loose font-light text-xs lg:text-sm tracking-wide">
-                <p>
-                    From our first quiet conversation to the grand moments that defined us, our journey has been one of discovery and shared dreams. We found in each other a home, a sanctuary, and a best friend.
-                </p>
-                <p>
-                    Today, we stand ready to promise our tomorrows. We are so honored to have you by our side as we step into this beautiful future, bound by love and mutual respect.
+    <div class="container-fixed">
+        <!-- The Date Section -->
+        <section class="section-padding text-center bg-white flex flex-col items-center">
+            <div class="max-w-4xl mx-auto" data-aos="fade-up">
+                <h2 class="elegant-title text-4xl md:text-6xl lg:text-8xl mb-4 lg:mb-6 text-[#2D3A31]">06 . 27 . 26</h2>
+                <p class="uppercase tracking-[0.3em] lg:tracking-[0.4em] text-[10px] lg:text-xs mb-8 lg:mb-12 text-[#C5A059]">Koisamo, Soin Ward</p>
+                <p class="max-w-xl mx-auto text-gray-500 leading-relaxed font-light text-xs lg:text-sm tracking-wide px-4">
+                    WE INVITE YOU TO CELEBRATE THE UNION OF TWO HEARTS. A DAY OF LOVE, LAUGHTER, AND THE START OF A NEW CHAPTER TOGETHER.
                 </p>
             </div>
-            <div class="pt-2 lg:pt-4">
-                <button class="btn-elegant">Our Full Story</button>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Location / Map -->
-    <section id="location" class="section-padding bg-white">
-        <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-            <!-- Info Column (Above Map on Mobile) -->
-            <div class="lg:col-span-5 order-1" data-aos="fade-right">
-                <h3 class="cinzel text-[10px] lg:text-sm tracking-[0.4em] uppercase mb-4 lg:mb-6 opacity-60">The Setting:</h3>
-                <h4 class="elegant-title text-4xl lg:text-5xl mb-6 lg:mb-8">At Their Home</h4>
-                <div class="space-y-6 lg:space-y-8 text-gray-600 font-light">
-                    <div class="group">
-                        <p class="uppercase tracking-widest text-[9px] lg:text-[10px] text-gold mb-1 lg:mb-2 font-semibold">Location</p>
-                        <p class="text-xs lg:text-sm">Koisamo, Soin Ward | 10:00 AM</p>
+        <!-- The Journey -->
+        <section id="journey" class="section-padding flex flex-col md:grid md:grid-cols-2 gap-10 lg:gap-20 items-center bg-[var(--soft-cream)] overflow-hidden">
+            <div class="image-frame w-full" data-aos="fade-up">
+                <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&q=80&w=1000" alt="Ray and Ivy" class="w-full max-w-md md:max-w-full h-[400px] lg:h-[650px] object-cover grayscale-[30%] shadow-xl">
+            </div>
+            <div class="space-y-6 lg:space-y-10 text-center md:text-center flex flex-col items-center" data-aos="fade-up">
+                <h3 class="cinzel text-base lg:text-xl tracking-[0.3em] uppercase opacity-60">Ray & Ivy:</h3>
+                <h4 class="elegant-title text-4xl lg:text-6xl text-[#2D3A31]">The Journey</h4>
+                <div class="space-y-4 lg:space-y-6 text-gray-600 leading-loose font-light text-xs lg:text-sm tracking-wide max-w-md">
+                    <p>
+                        From our first quiet conversation to the grand moments that defined us, our journey has been one of discovery and shared dreams. We found in each other a home, a sanctuary, and a best friend.
+                    </p>
+                    <p>
+                        Today, we stand ready to promise our tomorrows. We are so honored to have you by our side as we step into this beautiful future, bound by love and mutual respect.
+                    </p>
+                </div>
+                <div class="pt-2 lg:pt-4">
+                    <button class="btn-elegant">Our Full Story</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Location / Map -->
+        <section id="location" class="section-padding bg-white flex flex-col items-center">
+            <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center w-full">
+                <div class="lg:col-span-5 flex flex-col items-center lg:items-start" data-aos="fade-up">
+                    <h3 class="cinzel text-[10px] lg:text-sm tracking-[0.4em] uppercase mb-4 lg:mb-6 opacity-60">The Setting:</h3>
+                    <h4 class="elegant-title text-4xl lg:text-5xl mb-6 lg:mb-8">At Their Home</h4>
+                    
+                    <!-- Restore Left Alignment for Info Block -->
+                    <div class="location-info-block space-y-6 lg:space-y-8 text-gray-600 font-light">
+                        <div class="group">
+                            <p class="uppercase tracking-widest text-[9px] lg:text-[10px] text-gold mb-1 lg:mb-2 font-semibold">Location</p>
+                            <p class="text-xs lg:text-sm">Koisamo, Soin Ward | 10:00 AM</p>
+                        </div>
+                        <div class="w-10 h-[1px] bg-gold opacity-30"></div>
+                        <div class="group">
+                            <p class="uppercase tracking-widest text-[9px] lg:text-[10px] text-gold mb-1 lg:mb-2 font-semibold">The Celebration</p>
+                            <p class="text-xs lg:text-sm">Ceremony and Reception to follow</p>
+                        </div>
                     </div>
-                    <div class="w-10 h-[1px] bg-gold opacity-30"></div>
-                    <div class="group">
-                        <p class="uppercase tracking-widest text-[9px] lg:text-[10px] text-gold mb-1 lg:mb-2 font-semibold">The Celebration</p>
-                        <p class="text-xs lg:text-sm">Ceremony and Reception to follow</p>
+
+                    <div class="mt-8 lg:mt-12 mb-10 lg:mb-0 w-full text-center lg:text-left">
+                        <a href="https://www.google.com/maps/search/Koisamo+Soin+Ward" target="_blank" class="btn-elegant inline-block">Get Directions</a>
                     </div>
                 </div>
-                <div class="mt-8 lg:mt-12 mb-10 lg:mb-0">
-                    <a href="https://www.google.com/maps/search/Koisamo+Soin+Ward" target="_blank" class="btn-elegant inline-block">Get Directions</a>
+                
+                <div class="lg:col-span-7" data-aos="fade-up">
+                    <div class="map-container rounded-sm shadow-2xl overflow-hidden border border-[#EAE7DC]">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31911.36531368146!2d35.1500!3d-0.1500!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182a567c8b8b8b8b%3A0x0!2sKoisamo%2C+Soin+Ward!5e0!3m2!1sen!2ske!4v1625000000000!5m2!1sen!2ske" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                        </iframe>
+                    </div>
                 </div>
             </div>
-            
-            <!-- Map Column (Below Info on Mobile) -->
-            <div class="lg:col-span-7 order-2" data-aos="fade-left">
-                <div class="map-container rounded-sm shadow-2xl overflow-hidden border border-[#EAE7DC]">
-                    <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31911.36531368146!2d35.1500!3d-0.1500!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182a567c8b8b8b8b%3A0x0!2sKoisamo%2C+Soin+Ward!5e0!3m2!1sen!2ske!4v1625000000000!5m2!1sen!2ske" 
-                        width="100%" 
-                        height="100%" 
-                        style="border:0;" 
-                        allowfullscreen="" 
-                        loading="lazy">
-                    </iframe>
-                </div>
+        </section>
+
+        <!-- Message of Invitation -->
+        <section class="py-12 lg:py-20 text-center bg-white" data-aos="fade-up">
+            <div class="max-w-2xl mx-auto px-6 flex flex-col items-center">
+                <h3 class="elegant-title text-3xl lg:text-5xl text-[#2D3A31] mb-4">We would be honored to have you join us</h3>
+                <p class="serif italic text-gray-500 text-base lg:text-lg">Your presence is the greatest gift of all.</p>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Message of Invitation -->
-    <section class="py-12 lg:py-20 text-center bg-white" data-aos="fade-up">
-        <div class="max-w-2xl mx-auto px-6">
-            <h3 class="elegant-title text-3xl lg:text-5xl text-[#2D3A31] mb-4">We would be honored to have you join us</h3>
-            <p class="serif italic text-gray-500 text-base lg:text-lg">Your presence is the greatest gift of all.</p>
-        </div>
-    </section>
+        <!-- RSVP Section -->
+        <section id="rsvp" class="section-padding bg-[var(--soft-cream)] text-center flex flex-col items-center">
+            <div class="max-w-2xl mx-auto w-full" data-aos="fade-up">
+                <h2 class="elegant-title text-5xl lg:text-7xl mb-4 lg:mb-6">RSVP</h2>
+                <p class="uppercase tracking-[0.2em] lg:tracking-[0.3em] text-[9px] lg:text-[10px] mb-10 lg:mb-16 opacity-60">Kindly respond by June 1, 2026</p>
+                
+                <form class="space-y-8 lg:space-y-12 max-w-lg mx-auto">
+                    <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
+                        <input type="text" placeholder="GUEST NAME" class="w-full bg-transparent border-b border-gray-300 py-2 lg:py-3 outline-none focus:border-gold transition-colors font-light tracking-widest text-[10px] lg:text-[11px] text-center">
+                        <input type="email" placeholder="EMAIL ADDRESS" class="w-full bg-transparent border-b border-gray-300 py-2 lg:py-3 outline-none focus:border-gold transition-colors font-light tracking-widest text-[10px] lg:text-[11px] text-center">
+                    </div>
+                    <select class="w-full bg-transparent border-b border-gray-300 py-2 lg:py-3 outline-none focus:border-gold transition-colors font-light tracking-widest text-[10px] lg:text-[11px] appearance-none cursor-pointer text-center">
+                        <option value="" disabled selected>WILL YOU ATTEND?</option>
+                        <option>Joyfully Accept</option>
+                        <option>Regretfully Decline</option>
+                    </select>
+                    <button type="button" class="btn-elegant w-full md:w-auto">Confirm Attendance</button>
+                </form>
+            </div>
+        </section>
 
-    <!-- RSVP Section -->
-    <section id="rsvp" class="section-padding bg-[var(--soft-cream)] text-center">
-        <div class="max-w-2xl mx-auto" data-aos="fade-up">
-            <h2 class="elegant-title text-5xl lg:text-7xl mb-4 lg:mb-6">RSVP</h2>
-            <p class="uppercase tracking-[0.2em] lg:tracking-[0.3em] text-[9px] lg:text-[10px] mb-10 lg:mb-16 opacity-60">Kindly respond by June 1, 2026</p>
-            
-            <form class="space-y-8 lg:space-y-12">
-                <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
-                    <input type="text" placeholder="GUEST NAME" class="w-full bg-transparent border-b border-gray-300 py-2 lg:py-3 outline-none focus:border-gold transition-colors font-light tracking-widest text-[10px] lg:text-[11px]">
-                    <input type="email" placeholder="EMAIL ADDRESS" class="w-full bg-transparent border-b border-gray-300 py-2 lg:py-3 outline-none focus:border-gold transition-colors font-light tracking-widest text-[10px] lg:text-[11px]">
-                </div>
-                <select class="w-full bg-transparent border-b border-gray-300 py-2 lg:py-3 outline-none focus:border-gold transition-colors font-light tracking-widest text-[10px] lg:text-[11px] appearance-none cursor-pointer">
-                    <option value="" disabled selected>WILL YOU ATTEND?</option>
-                    <option>Thankfully Accept</option>
-                    <option>Regretfully Decline</option>
-                </select>
-                <button type="button" class="btn-elegant w-full md:w-auto">Confirm Attendance</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-12 lg:py-16 bg-[#2D3A31] text-white text-center">
-        <div class="cinzel text-2xl lg:text-3xl mb-4 tracking-[0.4em]">R & I</div>
-        <p class="text-[9px] lg:text-[10px] tracking-[0.4em] lg:tracking-[0.5em] uppercase opacity-40">Forever & Always | 2026</p>
-    </footer>
+        <!-- Footer -->
+        <footer class="py-12 lg:py-16 bg-[#2D3A31] text-white text-center">
+            <div class="cinzel text-2xl lg:text-3xl mb-4 tracking-[0.4em]">R & I</div>
+            <p class="text-[9px] lg:text-[10px] tracking-[0.4em] lg:tracking-[0.5em] uppercase opacity-40">Forever & Always | 2026</p>
+        </footer>
+    </div>
 
     <script>
         // Initialize AOS with premium easing
@@ -335,6 +365,13 @@
             once: false,
             mirror: true,
             easing: 'ease-in-out-sine'
+        });
+
+        // Immersive/Fullscreen handling: try to hide URL bars on load
+        window.addEventListener("load", function() {
+            setTimeout(function() {
+                window.scrollTo(0, 1);
+            }, 0);
         });
 
         // Smooth scroll
@@ -350,6 +387,14 @@
                 }
             });
         });
+
+        // Handle viewport height adjustments on resize (for mobile browsers)
+        const setVh = () => {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        };
+        window.addEventListener('resize', setVh);
+        setVh();
     </script>
 </body>
 </html>
